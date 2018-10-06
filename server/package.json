@@ -1,0 +1,21 @@
+{
+  "name": "react-ssr-server",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "4.16.3",
+    "react": "16.5.2",
+    "react-dom": "16.5.2",
+    "ts-loader": "2.3.2",
+    "ignore-loader": "0.1.2",
+    "webpack": "3.8.1"
+  },
+  "scripts": {
+    "build": "webpack --env.platform=server",
+    "start": "node ./dist/server"
+  },
+  "devDependencies": {
+    "@types/express": "4.16.0",
+    "typescript": "3.1.1"
+  }
+}
