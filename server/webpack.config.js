@@ -4,7 +4,7 @@ module.exports = function(env, argv) {
   
   // default to the server configuration
   const base = {
-    entry: './index.ts',
+    entry: './index.tsx',
     output: {
       filename: 'server.js',
       // path needs to be an ABSOLUTE file path
@@ -25,13 +25,23 @@ module.exports = function(env, argv) {
           use: [
             {
               loader: 'ts-loader',
-            }
-          ]
+              options: {
+                // disable type checker - we will use it in fork plugin
+                transpileOnly: true,
+              },
+            }]
         },
         {
-            test: /\.css$/,  
-            loaders: ['ignore-loader'],
-        }
+          // Exclude `js` files to keep "css" loader working as it injects
+          // its runtime that would otherwise processed through "file" loader.
+          // Also exclude `html` and `json` extensions so they get processed
+          // by webpacks internal loaders.
+          exclude: [/\.(js|jsx|mjs|ts|tsx)$/, /\.html$/, /\.json$/],
+          loader: require.resolve('file-loader'),
+          options: {
+            name: 'static/media/[name].[hash:8].[ext]',
+          },
+        },
       ]
     },
   }
