@@ -7,6 +7,8 @@ import { IStorageState } from '../reducers';
 export enum ActionType {
     RESET = '@@ssr/RESET',
     SET_TEST_MESSAGE = '@@ssr/SET_TEST_MESSAGE',
+    SET_BA_TEST_MESSAGE = '@@ssr/SET_BA_TEST_MESSAGE',
+    SET_BB_TEST_MESSAGE = '@@ssr/SET_BB_TEST_MESSAGE',
     SSR_COMPLETE = '@@ssr/SSR_COMPLETE',
 }
 
@@ -15,7 +17,7 @@ export interface IBaseAction {
     type: ActionType;
 }
 
-export const getTestMessage = () => {
+export const getTestMessage = (actionType: ActionType) => {
     return async (dispatch: any, getState: () => IStorageState) => {
         if (isClientSide) {
             console.log('call from client');
@@ -30,19 +32,16 @@ export const getTestMessage = () => {
 
         dispatch({
             payload: res.data,
-            type: ActionType.SET_TEST_MESSAGE,
+            type: actionType,
         });
     };
 };
 
-export const Reset = (): IBaseAction => ({
+export const reset = (): IBaseAction => ({
     type: ActionType.RESET
 });
 
 export const ssrComplete = () => {
-    // return {
-    //     type: ActionType.SSR_COMPLETE
-    // };
     return async (dispatch: any, getState: () => IStorageState) => {
         if (!getState().test.ssrComplete) {
             dispatch({

@@ -1,6 +1,7 @@
 import { ssrComplete } from '../redux/actions';
 import { lifecycle, compose } from 'recompose';
 import { connect } from 'react-redux';
+import { IStorageState } from '../redux/reducers';
 
 export const isServerSide: boolean = (typeof document === 'undefined');
 export const isClientSide: boolean = (typeof document !== 'undefined');
@@ -15,12 +16,20 @@ export const serverCallPossibility = (value?: boolean) => {
 };
 
 
-export const ssrResolver = (component: React.ComponentType, action?: any) => {
+export const ssrResolver = (
+  component: React.ComponentType,
+  ssrAction?: (state: IStorageState, dispatch: any) => Promise<void>,
+  clientAction?: (state: IStorageState, dispatch: any) => Promise<void>,
+  ): React.ComponentClass<any, any> => {
 
+  let storageState: any = null;
   let storageDispatch: any = null;
 
   const redux = connect(
-    (state: any) => ({}),
+    (state: any) => {
+      storageState = state;
+      return {};
+    },
     (dispatch: any) => {
       storageDispatch = dispatch;
       return {};
@@ -30,17 +39,28 @@ export const ssrResolver = (component: React.ComponentType, action?: any) => {
   const lifecycleHooks = lifecycle({
     componentWillMount() {
       (async () => {
-        if(action && serverCallPossibility()) {
-          await storageDispatch(action());
+        if(ssrAction && serverCallPossibility()) {
+          await ssrAction(storageState, storageDispatch);
         }
         storageDispatch(ssrComplete());
       })();
       
     },
   });
+
+  const componentLifecycleHooks = (!!clientAction)
+  ? lifecycle({
+    componentDidMount() {
+      clientAction(storageState, storageDispatch);
+    },
+  })
+  : null;
   
     return compose(
       redux,
       lifecycleHooks,
-    )(component);
+    )(
+      (!!componentLifecycleHooks)
+      ? componentLifecycleHooks(component)
+      : component);
 }

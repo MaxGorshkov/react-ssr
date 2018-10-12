@@ -1,7 +1,9 @@
 import * as React from 'react';
+import { BAComponent } from './baComponent';
+import { BBComponent } from './bbComponent';
 
 export interface InputModel {
-    text: string;
+    text?: string;
 }
 
 export class View extends React.Component<InputModel> {
@@ -9,9 +11,13 @@ export class View extends React.Component<InputModel> {
         const { text } = this.props;
         
         return (
-            <p className="App-intro">
-                bComponent content {text}
-            </p>
+            <div>
+                <p className="App-intro">
+                    bComponent content {text}
+                </p>
+                <BAComponent />
+                <BBComponent />
+            </div>
         );
     }
 }

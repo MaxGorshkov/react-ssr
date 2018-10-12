@@ -23,6 +23,11 @@
   cursor: pointer;
 }
 
+.link {
+  cursor: pointer;
+  color: blue;
+}
+
 .App-title {
   font-size: 1.5em;
 }

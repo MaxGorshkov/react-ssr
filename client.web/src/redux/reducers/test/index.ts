@@ -2,12 +2,16 @@ import { ActionType } from '../../actions';
 
 export interface ITestState {
     ssrComplete: boolean;
-    text: string;
+    text?: string;
+    baText?: string;
+    bbText?: string;
 }
 
 const initialState: ITestState = {
+    baText: undefined,
+    bbText: undefined,
     ssrComplete: false,
-    text: 'initial text',
+    text: undefined,
 };
 
 export const test = (state: ITestState = initialState, action: any): ITestState => {
@@ -20,7 +24,14 @@ export const test = (state: ITestState = initialState, action: any): ITestState 
             return Object.assign({}, state, {
                 text: action.payload,
             });
-        // case '@@router/LOCATION_CHANGE':
+        case ActionType.SET_BA_TEST_MESSAGE:
+            return Object.assign({}, state, {
+                baText: action.payload,
+            });
+        case ActionType.SET_BB_TEST_MESSAGE:
+            return Object.assign({}, state, {
+                bbText: action.payload,
+            });
         case ActionType.RESET:
             return initialState;
         default:
