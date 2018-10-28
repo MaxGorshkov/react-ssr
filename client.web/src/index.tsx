@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { App, configureStore } from './App';
-import './index.css';
 import { serverCallPossibility } from './shared';
 import { Provider } from 'react-redux';
 

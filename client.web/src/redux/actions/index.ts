@@ -9,6 +9,7 @@ export enum ActionType {
     SET_TEST_MESSAGE = '@@ssr/SET_TEST_MESSAGE',
     SET_BA_TEST_MESSAGE = '@@ssr/SET_BA_TEST_MESSAGE',
     SET_BB_TEST_MESSAGE = '@@ssr/SET_BB_TEST_MESSAGE',
+    CHANGE_THEME = '@@ssr/CHANGE_THEME',
     SSR_COMPLETE = '@@ssr/SSR_COMPLETE',
 }
 
@@ -39,6 +40,10 @@ export const getTestMessage = (actionType: ActionType) => {
 
 export const reset = (): IBaseAction => ({
     type: ActionType.RESET
+});
+
+export const changeTheme = (): IBaseAction => ({
+    type: ActionType.CHANGE_THEME
 });
 
 export const ssrComplete = () => {
